@@ -1,7 +1,26 @@
 .App {
   text-align: center;
+
 }
 
+.App > .body{
+  margin-top: 50px;
+}
+.App  .u-list{
+  width: 100%;
+  margin-top: 50px;
+}
+.u-list th,td{
+  text-align: left;
+  padding: 8px;
+}
+.u-list tr{
+  cursor: pointer;
+
+}
+.u-list tbody tr:hover{
+  background-color: #efefef;
+}
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 40vmin;
