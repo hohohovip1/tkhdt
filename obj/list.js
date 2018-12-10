@@ -3,17 +3,17 @@ var fs = require("fs");
 var path = require("path");
 
 
-class UniversityList {
+class UList {
   constructor() {
-    this.list = this.get();
+    this.list = this.getData();
   }
 
-  add(item) {
+  addSchool(item) {
     this.list.push(item);
     fs.appendFileSync(path.join(__dirname, "../data/data.txt"), JSON.stringify(item) + "\n");
   }
 
-  get() {
+  getData() {
     var data = fs.readFileSync(path.join(__dirname, "../data/data.txt"), "utf-8");
     if (data.length == 0) {
       return [];
@@ -28,8 +28,8 @@ class UniversityList {
     return tranform;
   }
 
-  find(type, value) {
-    var list = this.get();
+  findSchool(type, value) {
+    var list = this.getData();
 
     function finding(item) {
       return item[type].toString().indexOf(value.toString()) > -1;
@@ -39,12 +39,23 @@ class UniversityList {
 
     return found;
   }
+  findByName(value) {
+    var list = this.getData();
+    var temp =value.toUpperCase();
+    function finding(item) {
+      return item.name.toString().indexOf(temp) > -1;
+    }
 
-  update(id, value) {
+    var found = list.filter(finding);
+
+    return found;
+  }
+
+  change(id, value) {
 
     var list = this.list;
 
-    function returnid(item) {
+    function returnId(item) {
       return item.id;
     }
 
@@ -52,11 +63,11 @@ class UniversityList {
     value.id = id;
     this.list.splice(no, 1, value);
     console.log(this.list)
-    function savedata(result, item) {
+    function saveData(result, item) {
       return result + JSON.stringify(item) + "\n";
     }
 
-    var dataToSave = this.list.reduce(savedata, "");
+    var dataToSave = this.list.reduce(saveData, "");
     fs.writeFileSync(path.join(__dirname, "../data/data.txt"), dataToSave, "utf-8");
   }
 
@@ -70,15 +81,15 @@ class UniversityList {
     var no = list.map(returnid).indexOf(id);
     this.list.splice(no, 1);
 
-    function savedata(result, item) {
+    function saveData(result, item) {
       return result + JSON.stringify(item) + "\n";
     }
 
-    var dataToSave = this.list.reduce(savedata, "");
+    var dataToSave = this.list.reduce(saveData, "");
     fs.writeFileSync(path.join(__dirname, "../data/data.txt"), dataToSave, "utf-8");
   }
 
-  findbyyear(number) {
+  schoolAge(number) {
     var list = this.list;
     var no = list.filter(function (item) {
       return (2018 - Number(item.year.split("/")[2])) >= number;
@@ -87,4 +98,4 @@ class UniversityList {
   }
 }
 
-module.exports = UniversityList;
+module.exports = UList;

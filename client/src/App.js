@@ -45,9 +45,6 @@ class App extends Component {
         <div className="actions">
           <div className="row mb-4">
             <div className="input-group col-4">
-              <div className="input-group-prepend">
-                <label className="input-group-text" htmlFor="inputGroupSelect01">Filter type</label>
-              </div>
               <select className="custom-select" id="inputGroupSelect01"
                       onChange={e => this.setState({searchType: Number(e.target.value)})}
                       value={searchType}
@@ -56,41 +53,35 @@ class App extends Component {
                 <option value="1">Year</option>
               </select>
             </div>
-          </div>
-          <div className="row">
-            {searchType === 0 ? (
-              <div className="input-group input-group mb-3 col-4">
-                <div className="input-group-prepend">
-                  <span className="input-group-text" id="inputGroup-sizing-sm">Name</span>
-                </div>
-                <input type="text"
-                       className="form-control"
-                       aria-label="Small"
-                       aria-describedby="inputGroup-sizing-sm"
-                       value={name}
-                       onChange={e => this.setState({name: e.target.value})}
-                />
+            
+             {searchType === 0 ? (
+              <div class="col-md-4 mb-3">
+            
+              <input type="text" class="form-control" id="validationTooltip01" placeholder="First name" value={name} onChange={e => this.setState({name: e.target.value})}/>
+              <div class="valid-tooltip">
+                Looks good!
               </div>
+            </div>
             ) : (
-              <div className="input-group input-group mb-3 col-4">
-                <div className="input-group-prepend">
-                  <span className="input-group-text" id="inputGroup-sizing-sm">Year</span>
-                </div>
-                <input type="text"
-                       className="form-control"
-                       aria-label="Small"
-                       aria-describedby="inputGroup-sizing-sm"
-                       value={year}
-                       onChange={e => this.setState({year: e.target.value})}
-                />
+              <div class="col-md-4 mb-3">
+              
+              <input type="text" class="form-control" id="validationTooltip01" placeholder="Year" value={year} onChange={e => this.setState({year: e.target.value})}/>
+              <div class="valid-tooltip">
+                Looks good!
               </div>
+              </div>
+            
             )}
-            <button className="btn btn-primary align-self-baseline"
+            <button className="btn btn-dark text-white align-self-baseline"
                     onClick={this.applySearch}
             >
-              Search
+              Search School
             </button>
-            <button className="add-u btn-primary btn col-3 offset-2 btn-block align-self-baseline"
+          </div>
+          <div className="row justify-content-center">
+           
+            
+            <button className="add-u btn-success btn col-3 btn-block "
                     onClick={() => browserHistory.push("/new")}
             >
               Add University
@@ -108,6 +99,7 @@ class App extends Component {
             <th>Full name</th>
             <th>Year</th>
             <th>Address</th>
+            <th></th>
           </tr>
           </thead>
           <tbody>
@@ -120,6 +112,18 @@ class App extends Component {
               <td>{u.fullName}</td>
               <td>{u.year}</td>
               <td>{u.address}</td>
+              <td>
+                <button className="btn btn-secondary"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          axios.delete("/api/delete/"+u.id).then(() => {
+                            this.setState({list: this.state.list.filter(each => each.id !== u.id)})
+                          })
+                        }}
+                >
+                  Xóa
+                </button>
+              </td>
             </tr>
           ))}
           </tbody>
